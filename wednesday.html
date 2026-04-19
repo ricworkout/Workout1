@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Wednesday 🔥">
+<title>Wednesday — Cardio + Core & Legs</title>
+<style>
+  :root {
+    --bg:#0A0905;--surface:#141208;--card:#1C1A0E;--accent:#E07830;--accent2:#F5A623;
+    --gold:#F5C842;--text:#F0EEE8;--muted:#7A7560;--dim:#2A2818;--success:#2EC486;--radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro Display',sans-serif}
+  .screen{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.3s}
+  .screen.active{opacity:1;pointer-events:all}
+
+  #welcome{background:linear-gradient(160deg,#0A0905 0%,#1A1005 50%,#0A0905 100%);align-items:center;justify-content:center;padding:40px 32px;gap:0}
+  .welcome-day{font-size:13px;font-weight:700;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .welcome-title{font-size:52px;font-weight:800;line-height:1;text-align:center;margin-bottom:8px}
+  .welcome-title span{color:var(--accent)}
+  .welcome-sub{font-size:15px;color:var(--muted);text-align:center;margin-bottom:40px;line-height:1.5}
+  .stats-row{display:flex;gap:12px;margin-bottom:48px;width:100%;justify-content:center}
+  .stat-bubble{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:14px 20px;text-align:center;flex:1;max-width:110px}
+  .stat-bubble .val{font-size:24px;font-weight:800}
+  .stat-bubble .lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+  .btn-start{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:20px;font-weight:800;letter-spacing:1px;border:none;border-radius:var(--radius);padding:22px 0;width:100%;max-width:340px;cursor:pointer;box-shadow:0 8px 32px rgba(224,120,48,0.4);transition:transform 0.15s}
+  .btn-start:active{transform:scale(0.97)}
+
+  #exercise{background:var(--bg)}
+  .ex-header{padding:16px 20px 12px;display:flex;align-items:center;gap:12px;background:var(--surface);border-bottom:1px solid var(--dim);flex-shrink:0}
+  .ex-day-badge{background:var(--accent);color:white;font-size:11px;font-weight:800;letter-spacing:2px;padding:5px 12px;border-radius:20px;text-transform:uppercase}
+  .ex-progress-text{font-size:13px;color:var(--muted);margin-left:auto;font-weight:600}
+  .progress-bar-wrap{height:4px;background:var(--dim);flex-shrink:0}
+  .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.4s ease}
+  .ex-body{flex:1;overflow-y:auto;padding:20px 20px 0;-webkit-overflow-scrolling:touch}
+  .ex-number{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+  .ex-name{font-size:32px;font-weight:800;line-height:1.1;margin-bottom:20px}
+
+  .timer-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:24px}
+  .ring-container{position:relative;width:180px;height:180px}
+  .ring-container svg{transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:var(--dim);stroke-width:10}
+  .ring-fill{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+  .ring-time{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring-seconds{font-size:44px;font-weight:800;line-height:1}
+  .ring-label{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+
+  .sets-display{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:24px}
+  .sets-big{font-size:72px;font-weight:800;line-height:1;color:var(--accent)}
+  .sets-label{font-size:13px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+  .reps-row{display:flex;gap:10px;align-items:center}
+  .reps-val{font-size:28px;font-weight:700}
+  .reps-unit{font-size:14px;color:var(--muted)}
+
+  .detail-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  .detail-card{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:16px}
+  .detail-card .d-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+  .detail-card .d-val{font-size:22px;font-weight:800;color:var(--gold)}
+  .detail-card .d-unit{font-size:12px;color:var(--muted)}
+  .note-card{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:16px;margin-bottom:24px}
+  .note-card .n-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+  .note-card .n-text{font-size:14px;line-height:1.5;font-style:italic}
+
+  #rest-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transition:opacity 0.3s}
+  #rest-overlay.show{opacity:1;pointer-events:all}
+  .rest-title{font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+  .rest-count{font-size:96px;font-weight:800;color:var(--gold);line-height:1}
+  .rest-sub{font-size:14px;color:var(--muted)}
+  .btn-skip-rest{background:var(--dim);color:var(--muted);border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px}
+
+  #done{background:linear-gradient(160deg,#0A0F0A 0%,#0A1A0F 50%,#0A0F0A 100%);align-items:center;justify-content:center;padding:40px 32px;gap:0}
+  .done-emoji{font-size:72px;margin-bottom:16px}
+  .done-title{font-size:44px;font-weight:800;text-align:center;margin-bottom:8px}
+  .done-title span{color:var(--success)}
+  .done-sub{font-size:15px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:40px;max-width:300px}
+  .done-stats{display:flex;gap:16px;margin-bottom:48px}
+  .done-stat{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:18px 24px;text-align:center}
+  .done-stat .v{font-size:28px;font-weight:800;color:var(--success)}
+  .done-stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+  .btn-restart{background:var(--surface);color:var(--muted);border:1px solid var(--dim);border-radius:var(--radius);padding:18px 0;width:100%;max-width:300px;font-size:16px;font-weight:700;cursor:pointer}
+
+  .ex-controls{padding:16px 20px 32px;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
+  .btn-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:19px;font-weight:800;border:none;border-radius:var(--radius);padding:20px;cursor:pointer;transition:transform 0.15s;box-shadow:0 6px 24px rgba(224,120,48,0.35)}
+  .btn-next:active{transform:scale(0.97)}
+  .btn-prev{background:var(--surface);color:var(--muted);border:1px solid var(--dim);border-radius:var(--radius);padding:14px;font-size:15px;font-weight:600;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="welcome">
+  <div class="welcome-day">Wednesday</div>
+  <div class="welcome-title">CARDIO +<br><span>CORE &</span><br>LEGS</div>
+  <div class="welcome-sub">6 exercises · 45 minutes<br>Morning session</div>
+  <div class="stats-row">
+    <div class="stat-bubble"><div class="val">6</div><div class="lbl">Exercises</div></div>
+    <div class="stat-bubble"><div class="val">45</div><div class="lbl">Minutes</div></div>
+    <div class="stat-bubble"><div class="val">🔥</div><div class="lbl">Cardio</div></div>
+  </div>
+  <button class="btn-start" onclick="startWorkout()">START WORKOUT</button>
+</div>
+
+<div class="screen" id="exercise">
+  <div class="ex-header">
+    <div class="ex-day-badge">Wednesday</div>
+    <div class="ex-progress-text" id="progress-text">1 / 6</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+  </div>
+  <div class="ex-body" id="ex-body"></div>
+  <div class="ex-controls">
+    <button class="btn-next" id="btn-next" onclick="nextExercise()">NEXT EXERCISE →</button>
+    <button class="btn-prev" id="btn-prev" onclick="prevExercise()">← Back</button>
+  </div>
+</div>
+
+<div id="rest-overlay">
+  <div class="rest-title">Rest</div>
+  <div class="rest-count" id="rest-count">60</div>
+  <div class="rest-sub">seconds — breathe and recover</div>
+  <button class="btn-skip-rest" onclick="skipRest()">Skip Rest →</button>
+</div>
+
+<div class="screen" id="done">
+  <div class="done-emoji">🔥</div>
+  <div class="done-title">WEDNESDAY<br><span>DONE!</span></div>
+  <div class="done-sub">Legs, core, cardio — all covered. Rest tomorrow, then Friday's strength session.</div>
+  <div class="done-stats">
+    <div class="done-stat"><div class="v">6</div><div class="l">Exercises</div></div>
+    <div class="done-stat"><div class="v">45m</div><div class="l">Session</div></div>
+  </div>
+  <button class="btn-restart" onclick="restart()">↩ Restart Session</button>
+</div>
+
+<script>
+const exercises = [
+  {
+    name:"Spinning Steady State",type:"timer",duration:1200,
+    intensity:"70–75% max HR (115–122 bpm)",
+    note:"Maintain a steady moderate pace. You should be able to speak in short sentences but feel the effort. Fat-burning zone throughout."
+  },
+  {
+    name:"Dumbbell Lunges",type:"sets",weight:"BW or light DB",sets:3,reps:10,rest:60,
+    intensity:"Each leg",
+    note:"Step forward, lower back knee toward floor, push back up. Keep torso upright. 10 reps each leg = 20 total per set."
+  },
+  {
+    name:"Romanian Deadlift",type:"sets",weight:"Moderate DB",sets:3,reps:10,rest:60,
+    intensity:"Hip hinge movement",
+    note:"Stand with DBs in front. Hinge at hips, push them back, lower weights along your legs. Back stays flat. Feel the hamstring stretch."
+  },
+  {
+    name:"Plank Hold",type:"timer",duration:30,
+    intensity:"Forearm plank",
+    note:"Elbows under shoulders, body in a straight line. Squeeze your core, glutes, and quads. Don't let your hips sag or rise. Build to 60s!"
+  },
+  {
+    name:"Bicep Curls",type:"sets",weight:"Moderate DB",sets:3,reps:12,rest:60,
+    intensity:"Alternating arms",
+    note:"Stand tall, curl one arm at a time. Keep elbows tucked to your sides. Full range — all the way down, all the way up. No swinging."
+  },
+  {
+    name:"Cool Down Stretches",type:"timer",duration:300,
+    intensity:"Quads, calves, hips",
+    note:"Quad stretch (hold foot behind) → calf stretch (wall lean) → hip flexor lunge stretch. Hold each 30s per side. Breathe slowly."
+  }
+];
+
+let current=0,timerInterval=null,timerRemaining=0,restInterval=null,restRemaining=0;
+const CIRC=2*Math.PI*80;
+
+function startWorkout(){showScreen('exercise');renderExercise()}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+
+function renderExercise(){
+  clearTimer();
+  const ex=exercises[current],total=exercises.length;
+  document.getElementById('progress-text').textContent=`${current+1} / ${total}`;
+  document.getElementById('progress-bar').style.width=`${(current/total)*100}%`;
+  document.getElementById('btn-prev').style.opacity=current===0?'0.3':'1';
+  document.getElementById('btn-next').textContent=current===total-1?'FINISH 🏆':'NEXT EXERCISE →';
+
+  let html=`<div class="ex-number">Exercise ${current+1} of ${total}</div><div class="ex-name">${ex.name}</div>`;
+
+  if(ex.type==='timer'){
+    timerRemaining=ex.duration;
+    const mins=Math.floor(ex.duration/60);
+    html+=`<div class="timer-wrap"><div class="ring-container">
+      <svg width="180" height="180" viewBox="0 0 180 180">
+        <circle class="ring-bg" cx="90" cy="90" r="80"/>
+        <circle class="ring-fill" id="ring" cx="90" cy="90" r="80" stroke-dasharray="${CIRC}" stroke-dashoffset="0"/>
+      </svg>
+      <div class="ring-time"><div class="ring-seconds" id="timer-display">${mins}:00</div><div class="ring-label">remaining</div></div>
+    </div></div>`;
+    html+=`<div class="detail-cards">
+      <div class="detail-card"><div class="d-label">Duration</div><div class="d-val">${mins}<span class="d-unit"> min</span></div></div>
+      <div class="detail-card"><div class="d-label">Intensity</div><div class="d-val" style="font-size:14px;color:var(--text)">${ex.intensity}</div></div>
+    </div>`;
+  } else {
+    html+=`<div class="sets-display">
+      <div class="sets-big">${ex.sets}</div><div class="sets-label">sets</div>
+      <div class="reps-row"><div class="reps-val">× ${ex.reps}</div><div class="reps-unit">reps</div></div>
+    </div>`;
+    html+=`<div class="detail-cards">
+      <div class="detail-card"><div class="d-label">Weight</div><div class="d-val" style="font-size:18px">${ex.weight}</div></div>
+      <div class="detail-card"><div class="d-label">Rest</div><div class="d-val">${ex.rest}<span class="d-unit">s</span></div></div>
+    </div>`;
+  }
+  html+=`<div class="note-card"><div class="n-label">💡 How to do it</div><div class="n-text">${ex.note}</div></div>`;
+  document.getElementById('ex-body').innerHTML=html;
+  document.getElementById('ex-body').scrollTop=0;
+  if(ex.type==='timer') startTimer();
+}
+
+function startTimer(){
+  updateRing(timerRemaining,exercises[current].duration);
+  timerInterval=setInterval(()=>{
+    timerRemaining--;
+    updateRing(timerRemaining,exercises[current].duration);
+    if(timerRemaining<=0){clearInterval(timerInterval);if(navigator.vibrate)navigator.vibrate([300,100,300])}
+  },1000);
+}
+
+function updateRing(rem,total){
+  const el=document.getElementById('timer-display'),ring=document.getElementById('ring');
+  if(!el||!ring)return;
+  el.textContent=`${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`;
+  ring.style.strokeDashoffset=CIRC*(1-rem/total);
+}
+
+function clearTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null}}
+
+function nextExercise(){
+  const ex=exercises[current];
+  if(current<exercises.length-1){
+    if(ex.type==='sets'){showRest(ex.rest||60)}else{current++;renderExercise()}
+  }else{clearTimer();showScreen('done')}
+}
+
+function prevExercise(){if(current>0){current--;renderExercise()}}
+
+function showRest(seconds){
+  restRemaining=seconds;
+  document.getElementById('rest-overlay').classList.add('show');
+  document.getElementById('rest-count').textContent=restRemaining;
+  restInterval=setInterval(()=>{
+    restRemaining--;
+    document.getElementById('rest-count').textContent=restRemaining;
+    if(restRemaining<=0)skipRest();
+  },1000);
+}
+
+function skipRest(){clearInterval(restInterval);document.getElementById('rest-overlay').classList.remove('show');current++;renderExercise()}
+function restart(){current=0;clearTimer();showScreen('welcome')}
+</script>
+</body>
+</html>
