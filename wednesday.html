@@ -87,6 +87,8 @@
   .btn-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:19px;font-weight:800;border:none;border-radius:var(--radius);padding:20px;cursor:pointer;transition:transform 0.15s;box-shadow:0 6px 24px rgba(224,120,48,0.35)}
   .btn-next:active{transform:scale(0.97)}
   .btn-prev{background:var(--surface);color:var(--muted);border:1px solid var(--dim);border-radius:var(--radius);padding:14px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn-pause{background:var(--surface);color:var(--gold);border:2px solid var(--gold);border-radius:var(--radius);padding:14px;font-size:17px;font-weight:800;cursor:pointer;letter-spacing:1px;transition:all 0.2s}
+  .btn-pause.paused{background:var(--gold);color:#000}
 </style>
 </head>
 <body>
@@ -114,6 +116,7 @@
   <div class="ex-body" id="ex-body"></div>
   <div class="ex-controls">
     <button class="btn-next" id="btn-next" onclick="nextExercise()">NEXT EXERCISE →</button>
+    <button class="btn-pause" id="btn-pause" onclick="togglePause()">⏸ PAUSE</button>
     <button class="btn-prev" id="btn-prev" onclick="prevExercise()">← Back</button>
   </div>
 </div>
@@ -170,7 +173,7 @@ const exercises = [
   }
 ];
 
-let current=0,timerInterval=null,timerRemaining=0,restInterval=null,restRemaining=0;
+let current=0,timerInterval=null,timerRemaining=0,restInterval=null,restRemaining=0,isPaused=false;
 const CIRC=2*Math.PI*80;
 
 function startWorkout(){showScreen('exercise');renderExercise()}
@@ -183,6 +186,11 @@ function renderExercise(){
   document.getElementById('progress-bar').style.width=`${(current/total)*100}%`;
   document.getElementById('btn-prev').style.opacity=current===0?'0.3':'1';
   document.getElementById('btn-next').textContent=current===total-1?'FINISH 🏆':'NEXT EXERCISE →';
+  const isTimerEx=exercises[current].type==='timer';
+  document.getElementById('btn-pause').style.display=isTimerEx?'block':'none';
+  isPaused=false;
+  document.getElementById('btn-pause').textContent='⏸ PAUSE';
+  document.getElementById('btn-pause').classList.remove('paused');
 
   let html=`<div class="ex-number">Exercise ${current+1} of ${total}</div><div class="ex-name">${ex.name}</div>`;
 
@@ -255,6 +263,12 @@ function showRest(seconds){
 }
 
 function skipRest(){clearInterval(restInterval);document.getElementById('rest-overlay').classList.remove('show');current++;renderExercise()}
+function togglePause(){
+  const btn=document.getElementById('btn-pause');
+  if(isPaused){isPaused=false;btn.textContent='⏸ PAUSE';btn.classList.remove('paused');startTimer()}
+  else{isPaused=true;btn.textContent='▶ RESUME';btn.classList.add('paused');clearTimer()}
+}
+
 function restart(){current=0;clearTimer();showScreen('welcome')}
 </script>
 </body>
