@@ -9,113 +9,83 @@
 <title>Monday — Cardio + Upper Body</title>
 <style>
   :root {
-    --bg: #0A0A0F;
-    --surface: #13131A;
-    --card: #1A1A24;
-    --accent: #E8293A;
-    --accent2: #FF6B35;
-    --gold: #F5C842;
-    --text: #F0F0F5;
-    --muted: #7A8599;
-    --dim: #2A2A38;
-    --success: #2EC486;
-    --radius: 18px;
+    --bg:#0A0A0F;--surface:#13131A;--card:#1A1A24;--accent:#E8293A;--accent2:#FF6B35;
+    --gold:#F5C842;--text:#F0F0F5;--muted:#7A8599;--dim:#2A2A38;--success:#2EC486;--radius:18px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { height:100%; overflow:hidden; }
-  body { background:var(--bg); color:var(--text); font-family:-apple-system,'SF Pro Display',sans-serif; }
-
-  .screen { position:fixed; inset:0; display:flex; flex-direction:column; opacity:0; pointer-events:none; transition:opacity 0.3s; }
-  .screen.active { opacity:1; pointer-events:all; }
-
-  #welcome {
-    background: linear-gradient(160deg, #0A0A0F 0%, #1A0810 50%, #0A0A0F 100%);
-    align-items:center; justify-content:center; gap:0; padding:40px 32px;
-  }
-  .welcome-day { font-size:13px; font-weight:700; letter-spacing:4px; color:var(--accent); text-transform:uppercase; margin-bottom:12px; }
-  .welcome-title { font-size:52px; font-weight:800; line-height:1; text-align:center; margin-bottom:8px; }
-  .welcome-title span { color:var(--accent); }
-  .welcome-sub { font-size:15px; color:var(--muted); text-align:center; margin-bottom:40px; line-height:1.5; }
-  .stats-row { display:flex; gap:12px; margin-bottom:48px; width:100%; justify-content:center; }
-  .stat-bubble { background:var(--card); border:1px solid var(--dim); border-radius:14px; padding:14px 20px; text-align:center; flex:1; max-width:110px; }
-  .stat-bubble .val { font-size:24px; font-weight:800; color:var(--text); }
-  .stat-bubble .lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
-  .btn-start { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:20px; font-weight:800; letter-spacing:1px; border:none; border-radius:var(--radius); padding:22px 0; width:100%; max-width:340px; cursor:pointer; box-shadow:0 8px 32px rgba(232,41,58,0.4); transition:transform 0.15s, box-shadow 0.15s; }
-  .btn-start:active { transform:scale(0.97); box-shadow:0 4px 16px rgba(232,41,58,0.3); }
-
-  #exercise { background:var(--bg); }
-
-  .ex-header { padding:16px 20px 12px; display:flex; align-items:center; gap:12px; background:var(--surface); border-bottom:1px solid var(--dim); flex-shrink:0; }
-  .ex-day-badge { background:var(--accent); color:white; font-size:11px; font-weight:800; letter-spacing:2px; padding:5px 12px; border-radius:20px; text-transform:uppercase; }
-  .ex-progress-text { font-size:13px; color:var(--muted); margin-left:auto; font-weight:600; }
-
-  .progress-bar-wrap { height:4px; background:var(--dim); flex-shrink:0; }
-  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.4s ease; }
-
-  .ex-body { flex:1; overflow-y:auto; padding:20px 20px 0; -webkit-overflow-scrolling:touch; }
-
-  .ex-number { font-size:12px; font-weight:700; letter-spacing:3px; color:var(--accent); text-transform:uppercase; margin-bottom:8px; }
-  .ex-name { font-size:32px; font-weight:800; line-height:1.1; margin-bottom:16px; }
-
-  /* GIF CARD */
-  .gif-card { background:var(--card); border:1px solid var(--dim); border-radius:14px; overflow:hidden; margin-bottom:20px; position:relative; }
-  .gif-card img { width:100%; max-height:200px; object-fit:cover; display:block; }
-  .gif-label { position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.7); color:var(--muted); font-size:10px; font-weight:700; letter-spacing:1px; padding:4px 8px; border-radius:8px; text-transform:uppercase; }
-
-  .timer-wrap { display:flex; flex-direction:column; align-items:center; margin-bottom:24px; }
-  .ring-container { position:relative; width:180px; height:180px; }
-  .ring-container svg { transform:rotate(-90deg); }
-  .ring-bg { fill:none; stroke:var(--dim); stroke-width:10; }
-  .ring-fill { fill:none; stroke:var(--accent); stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset 1s linear; }
-  .ring-time { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-  .ring-seconds { font-size:44px; font-weight:800; line-height:1; }
-  .ring-label { font-size:11px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
-
-  .sets-display { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:24px; }
-  .sets-big { font-size:72px; font-weight:800; line-height:1; color:var(--accent); }
-  .sets-label { font-size:13px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
-  .reps-row { display:flex; gap:10px; align-items:center; }
-  .reps-val { font-size:28px; font-weight:700; }
-  .reps-unit { font-size:14px; color:var(--muted); }
-
-  .detail-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
-  .detail-card { background:var(--card); border:1px solid var(--dim); border-radius:14px; padding:16px; }
-  .detail-card .d-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
-  .detail-card .d-val { font-size:22px; font-weight:800; color:var(--gold); }
-  .detail-card .d-unit { font-size:12px; color:var(--muted); }
-
-  .note-card { background:var(--card); border:1px solid var(--dim); border-radius:14px; padding:16px; margin-bottom:24px; }
-  .note-card .n-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
-  .note-card .n-text { font-size:14px; color:var(--text); line-height:1.5; font-style:italic; }
-
-  #rest-overlay {
-    position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:100;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
-    opacity:0; pointer-events:none; transition:opacity 0.3s;
-  }
-  #rest-overlay.show { opacity:1; pointer-events:all; }
-  .rest-title { font-size:16px; font-weight:700; letter-spacing:3px; color:var(--muted); text-transform:uppercase; }
-  .rest-count { font-size:96px; font-weight:800; color:var(--gold); line-height:1; }
-  .rest-sub { font-size:14px; color:var(--muted); }
-  .btn-skip-rest { background:var(--dim); color:var(--muted); border:none; border-radius:12px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; margin-top:8px; }
-
-  #done { background:linear-gradient(160deg,#0A0F0A 0%,#0A1A0F 50%,#0A0F0A 100%); align-items:center; justify-content:center; padding:40px 32px; gap:0; }
-  .done-emoji { font-size:72px; margin-bottom:16px; }
-  .done-title { font-size:44px; font-weight:800; text-align:center; margin-bottom:8px; }
-  .done-title span { color:var(--success); }
-  .done-sub { font-size:15px; color:var(--muted); text-align:center; line-height:1.6; margin-bottom:40px; max-width:300px; }
-  .done-stats { display:flex; gap:16px; margin-bottom:48px; }
-  .done-stat { background:var(--card); border:1px solid var(--dim); border-radius:14px; padding:18px 24px; text-align:center; }
-  .done-stat .v { font-size:28px; font-weight:800; color:var(--success); }
-  .done-stat .l { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
-  .btn-restart { background:var(--surface); color:var(--muted); border:1px solid var(--dim); border-radius:var(--radius); padding:18px 0; width:100%; max-width:300px; font-size:16px; font-weight:700; cursor:pointer; }
-
-  .ex-controls { padding:16px 20px 32px; flex-shrink:0; display:flex; flex-direction:column; gap:10px; }
-  .btn-next { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:19px; font-weight:800; border:none; border-radius:var(--radius); padding:20px; cursor:pointer; transition:transform 0.15s; box-shadow:0 6px 24px rgba(232,41,58,0.35); }
-  .btn-next:active { transform:scale(0.97); }
-  .btn-prev { background:var(--surface); color:var(--muted); border:1px solid var(--dim); border-radius:var(--radius); padding:14px; font-size:15px; font-weight:600; cursor:pointer; }
-  .btn-pause { background:var(--surface); color:var(--gold); border:2px solid var(--gold); border-radius:var(--radius); padding:14px; font-size:17px; font-weight:800; cursor:pointer; letter-spacing:1px; transition:all 0.2s; }
-  .btn-pause.paused { background:var(--gold); color:#000; }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,'SF Pro Display',sans-serif}
+  .screen{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.3s}
+  .screen.active{opacity:1;pointer-events:all}
+  #welcome{background:linear-gradient(160deg,#0A0A0F 0%,#1A0810 50%,#0A0A0F 100%);align-items:center;justify-content:center;gap:0;padding:40px 32px}
+  .welcome-day{font-size:13px;font-weight:700;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .welcome-title{font-size:52px;font-weight:800;line-height:1;text-align:center;margin-bottom:8px}
+  .welcome-title span{color:var(--accent)}
+  .welcome-sub{font-size:15px;color:var(--muted);text-align:center;margin-bottom:40px;line-height:1.5}
+  .stats-row{display:flex;gap:12px;margin-bottom:48px;width:100%;justify-content:center}
+  .stat-bubble{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:14px 20px;text-align:center;flex:1;max-width:110px}
+  .stat-bubble .val{font-size:24px;font-weight:800;color:var(--text)}
+  .stat-bubble .lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+  .btn-start{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:20px;font-weight:800;letter-spacing:1px;border:none;border-radius:var(--radius);padding:22px 0;width:100%;max-width:340px;cursor:pointer;box-shadow:0 8px 32px rgba(232,41,58,0.4);transition:transform 0.15s}
+  .btn-start:active{transform:scale(0.97)}
+  #exercise{background:var(--bg)}
+  .ex-header{padding:16px 20px 12px;display:flex;align-items:center;gap:12px;background:var(--surface);border-bottom:1px solid var(--dim);flex-shrink:0}
+  .ex-day-badge{background:var(--accent);color:white;font-size:11px;font-weight:800;letter-spacing:2px;padding:5px 12px;border-radius:20px;text-transform:uppercase}
+  .ex-progress-text{font-size:13px;color:var(--muted);margin-left:auto;font-weight:600}
+  .progress-bar-wrap{height:4px;background:var(--dim);flex-shrink:0}
+  .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.4s ease}
+  .ex-body{flex:1;overflow-y:auto;padding:20px 20px 0;-webkit-overflow-scrolling:touch}
+  .ex-number{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+  .ex-name{font-size:32px;font-weight:800;line-height:1.1;margin-bottom:16px}
+  .btn-youtube{display:flex;align-items:center;justify-content:center;gap:10px;background:#CC0000;color:white;font-size:15px;font-weight:800;border:none;border-radius:12px;padding:15px 20px;width:100%;margin-bottom:20px;cursor:pointer;text-decoration:none;box-shadow:0 4px 16px rgba(200,0,0,0.4);transition:transform 0.15s,box-shadow 0.15s;-webkit-tap-highlight-color:transparent}
+  .btn-youtube:active{transform:scale(0.97);box-shadow:0 2px 8px rgba(200,0,0,0.25)}
+  .yt-icon{font-size:22px;flex-shrink:0}
+  .yt-text{text-align:left;line-height:1.3}
+  .yt-sub{font-size:11px;opacity:0.8;font-weight:600;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px}
+  .timer-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:24px}
+  .ring-container{position:relative;width:180px;height:180px}
+  .ring-container svg{transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:var(--dim);stroke-width:10}
+  .ring-fill{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+  .ring-time{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring-seconds{font-size:44px;font-weight:800;line-height:1}
+  .ring-label{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+  .sets-display{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:24px}
+  .sets-big{font-size:72px;font-weight:800;line-height:1;color:var(--accent)}
+  .sets-label{font-size:13px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+  .reps-row{display:flex;gap:10px;align-items:center}
+  .reps-val{font-size:28px;font-weight:700}
+  .reps-unit{font-size:14px;color:var(--muted)}
+  .detail-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  .detail-card{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:16px}
+  .detail-card .d-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+  .detail-card .d-val{font-size:22px;font-weight:800;color:var(--gold)}
+  .detail-card .d-unit{font-size:12px;color:var(--muted)}
+  .note-card{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:16px;margin-bottom:24px}
+  .note-card .n-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+  .note-card .n-text{font-size:14px;color:var(--text);line-height:1.5;font-style:italic}
+  #rest-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transition:opacity 0.3s}
+  #rest-overlay.show{opacity:1;pointer-events:all}
+  .rest-title{font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+  .rest-count{font-size:96px;font-weight:800;color:var(--gold);line-height:1}
+  .rest-sub{font-size:14px;color:var(--muted)}
+  .btn-skip-rest{background:var(--dim);color:var(--muted);border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px}
+  #done{background:linear-gradient(160deg,#0A0F0A 0%,#0A1A0F 50%,#0A0F0A 100%);align-items:center;justify-content:center;padding:40px 32px;gap:0}
+  .done-emoji{font-size:72px;margin-bottom:16px}
+  .done-title{font-size:44px;font-weight:800;text-align:center;margin-bottom:8px}
+  .done-title span{color:var(--success)}
+  .done-sub{font-size:15px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:40px;max-width:300px}
+  .done-stats{display:flex;gap:16px;margin-bottom:48px}
+  .done-stat{background:var(--card);border:1px solid var(--dim);border-radius:14px;padding:18px 24px;text-align:center}
+  .done-stat .v{font-size:28px;font-weight:800;color:var(--success)}
+  .done-stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+  .btn-restart{background:var(--surface);color:var(--muted);border:1px solid var(--dim);border-radius:var(--radius);padding:18px 0;width:100%;max-width:300px;font-size:16px;font-weight:700;cursor:pointer}
+  .ex-controls{padding:16px 20px 32px;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
+  .btn-next{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:19px;font-weight:800;border:none;border-radius:var(--radius);padding:20px;cursor:pointer;transition:transform 0.15s;box-shadow:0 6px 24px rgba(232,41,58,0.35)}
+  .btn-next:active{transform:scale(0.97)}
+  .btn-prev{background:var(--surface);color:var(--muted);border:1px solid var(--dim);border-radius:var(--radius);padding:14px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn-pause{background:var(--surface);color:var(--gold);border:2px solid var(--gold);border-radius:var(--radius);padding:14px;font-size:17px;font-weight:800;cursor:pointer;letter-spacing:1px;transition:all 0.2s}
+  .btn-pause.paused{background:var(--gold);color:#000}
 </style>
 </head>
 <body>
@@ -167,219 +137,119 @@
 </div>
 
 <script>
-const exercises = [
-  {
-    name: "Spinning Warmup",
-    type: "timer",
-    duration: 600,
-    weight: null, sets: null, reps: null,
-    intensity: "Light resistance",
-    note: "Pedal easy. Get your heart rate up to around 110 bpm. Just wake the body up — no effort yet.",
-    gif: "https://media.giphy.com/media/3o7TKwxYkeW0ZvTqsU/giphy.gif",
-    gifAlt: "Spinning bike warmup"
-  },
-  {
-    name: "Spinning HIIT",
-    type: "timer",
-    duration: 900,
-    weight: null, sets: null, reps: null,
-    intensity: "1 min hard / 1 min easy × 7",
-    note: "Go hard (130–154 bpm) for 1 minute, then easy for 1 minute. Repeat 7 times. Push on the hard intervals!",
-    gif: "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
-    gifAlt: "Cycling HIIT intervals"
-  },
-  {
-    name: "Bench Press",
-    type: "sets",
-    duration: null,
-    weight: "30 kg", sets: 3, reps: 10, rest: 90,
-    intensity: "→ 32 kg at Week 4",
-    note: "Keep elbows at 45°. Lower controlled, press strong. Full stop at top. 90 seconds rest between sets.",
-    gif: "https://media.giphy.com/media/3oFzmkkwfOGMRSm9he/giphy.gif",
-    gifAlt: "Bench press technique"
-  },
-  {
-    name: "Dumbbell Rows",
-    type: "sets",
-    duration: null,
-    weight: "Moderate", sets: 3, reps: 12, rest: 60,
-    intensity: "Each arm",
-    note: "One knee on bench, back flat and parallel to floor. Pull elbow straight back. Squeeze at the top.",
-    gif: "https://media.giphy.com/media/RH1IFq2GT0Ooo8iIpx/giphy.gif",
-    gifAlt: "Single arm dumbbell row"
-  },
-  {
-    name: "Shoulder Press",
-    type: "sets",
-    duration: null,
-    weight: "Light-medium DB", sets: 3, reps: 10, rest: 60,
-    intensity: "Seated on bench",
-    note: "Sit upright on bench. Press dumbbells from shoulder height straight up. Lower slowly. Don't arch your back.",
-    gif: "https://media.giphy.com/media/9M3aPCDRSH5KkFmxiA/giphy.gif",
-    gifAlt: "Seated dumbbell shoulder press"
-  },
-  {
-    name: "Cool Down Stretch",
-    type: "timer",
-    duration: 300,
-    weight: null, sets: null, reps: null,
-    intensity: "Chest, shoulders, back",
-    note: "Doorway chest stretch → shoulder cross-body → cat-cow × 5. Hold each 30 seconds. Breathe deeply.",
-    gif: "https://media.giphy.com/media/l4FGnAfL5LJDCIVAA/giphy.gif",
-    gifAlt: "Cool down stretching"
-  }
+const exercises=[
+  {name:"Spinning Warmup",type:"timer",duration:600,intensity:"Light resistance",
+   note:"Pedal easy. Get your heart rate up to around 110 bpm. Just wake the body up — no effort yet.",
+   yt:"https://www.youtube.com/watch?v=5DFpIEWCa8k",ytLabel:"Spinning Warmup Technique"},
+  {name:"Spinning HIIT",type:"timer",duration:900,intensity:"1 min hard / 1 min easy × 7",
+   note:"Go hard (130–154 bpm) for 1 minute, then easy for 1 minute. Repeat 7 times. Push on the hard intervals!",
+   yt:"https://www.youtube.com/watch?v=MMbKX2-XTEE",ytLabel:"Cycling HIIT Explained"},
+  {name:"Bench Press",type:"sets",weight:"30 kg",sets:3,reps:10,rest:90,intensity:"→ 32 kg at Week 4",
+   note:"Keep elbows at 45°. Lower controlled, press strong. Full stop at top. 90 seconds rest between sets.",
+   yt:"https://www.youtube.com/watch?v=SCVCLChPQps",ytLabel:"Bench Press Form Guide"},
+  {name:"Dumbbell Rows",type:"sets",weight:"Moderate",sets:3,reps:12,rest:60,intensity:"Each arm",
+   note:"One knee on bench, back flat and parallel to floor. Pull elbow straight back. Squeeze at the top.",
+   yt:"https://www.youtube.com/watch?v=roCP6wCXPqo",ytLabel:"Dumbbell Row Tutorial"},
+  {name:"Shoulder Press",type:"sets",weight:"Light-medium DB",sets:3,reps:10,rest:60,intensity:"Seated on bench",
+   note:"Sit upright on bench. Press dumbbells from shoulder height straight up. Lower slowly. Don't arch your back.",
+   yt:"https://www.youtube.com/watch?v=HzIiNhHhhtA",ytLabel:"Seated DB Shoulder Press"},
+  {name:"Cool Down Stretch",type:"timer",duration:300,intensity:"Chest, shoulders, back",
+   note:"Doorway chest stretch → shoulder cross-body → cat-cow × 5. Hold each 30 seconds. Breathe deeply.",
+   yt:"https://www.youtube.com/watch?v=1fpDMQPj9Gg",ytLabel:"Upper Body Cool Down Stretches"}
 ];
 
-let current = 0;
-let timerInterval = null;
-let timerRemaining = 0;
-let restInterval = null;
-let restRemaining = 0;
-let isPaused = false;
-const CIRCUMFERENCE = 2 * Math.PI * 80;
+let current=0,timerInterval=null,timerRemaining=0,restInterval=null,restRemaining=0,isPaused=false;
+const CIRC=2*Math.PI*80;
 
-function startWorkout() { showScreen('exercise'); renderExercise(); }
+function startWorkout(){showScreen('exercise');renderExercise()}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function renderExercise() {
+function renderExercise(){
   clearTimer();
-  const ex = exercises[current];
-  const total = exercises.length;
-  document.getElementById('progress-text').textContent = `${current + 1} / ${total}`;
-  document.getElementById('progress-bar').style.width = `${((current) / total) * 100}%`;
-  document.getElementById('btn-prev').style.opacity = current === 0 ? '0.3' : '1';
-  document.getElementById('btn-next').textContent = current === total - 1 ? 'FINISH 🏆' : 'NEXT EXERCISE →';
-  const isTimerEx = exercises[current].type === 'timer';
-  document.getElementById('btn-pause').style.display = isTimerEx ? 'block' : 'none';
-  isPaused = false;
-  document.getElementById('btn-pause').textContent = '⏸ PAUSE';
+  const ex=exercises[current],total=exercises.length;
+  document.getElementById('progress-text').textContent=`${current+1} / ${total}`;
+  document.getElementById('progress-bar').style.width=`${(current/total)*100}%`;
+  document.getElementById('btn-prev').style.opacity=current===0?'0.3':'1';
+  document.getElementById('btn-next').textContent=current===total-1?'FINISH 🏆':'NEXT EXERCISE →';
+  const isTimer=ex.type==='timer';
+  document.getElementById('btn-pause').style.display=isTimer?'block':'none';
+  isPaused=false;
+  document.getElementById('btn-pause').textContent='⏸ PAUSE';
   document.getElementById('btn-pause').classList.remove('paused');
 
-  let html = `<div class="ex-number">Exercise ${current + 1} of ${total}</div>`;
-  html += `<div class="ex-name">${ex.name}</div>`;
+  let html=`<div class="ex-number">Exercise ${current+1} of ${total}</div><div class="ex-name">${ex.name}</div>`;
 
-  // GIF
-  if (ex.gif) {
-    html += `<div class="gif-card">
-      <img src="${ex.gif}" alt="${ex.gifAlt}" loading="lazy">
-      <div class="gif-label">▶ Demo</div>
-    </div>`;
+  if(ex.yt){
+    html+=`<a class="btn-youtube" href="${ex.yt}" target="_blank" rel="noopener">
+      <span class="yt-icon">▶</span>
+      <span class="yt-text"><span class="yt-sub">Watch Demo</span>${ex.ytLabel}</span>
+    </a>`;
   }
 
-  if (ex.type === 'timer') {
-    timerRemaining = ex.duration;
-    const mins = Math.floor(ex.duration / 60);
-    html += `
-      <div class="timer-wrap">
-        <div class="ring-container">
-          <svg width="180" height="180" viewBox="0 0 180 180">
-            <circle class="ring-bg" cx="90" cy="90" r="80"/>
-            <circle class="ring-fill" id="ring" cx="90" cy="90" r="80"
-              stroke-dasharray="${CIRCUMFERENCE}"
-              stroke-dashoffset="0"/>
-          </svg>
-          <div class="ring-time">
-            <div class="ring-seconds" id="timer-display">${mins}:00</div>
-            <div class="ring-label">remaining</div>
-          </div>
-        </div>
-      </div>`;
-    html += `<div class="detail-cards">
+  if(isTimer){
+    timerRemaining=ex.duration;
+    const mins=Math.floor(ex.duration/60);
+    html+=`<div class="timer-wrap"><div class="ring-container">
+      <svg width="180" height="180" viewBox="0 0 180 180">
+        <circle class="ring-bg" cx="90" cy="90" r="80"/>
+        <circle class="ring-fill" id="ring" cx="90" cy="90" r="80" stroke-dasharray="${CIRC}" stroke-dashoffset="0"/>
+      </svg>
+      <div class="ring-time"><div class="ring-seconds" id="timer-display">${mins}:00</div><div class="ring-label">remaining</div></div>
+    </div></div>`;
+    html+=`<div class="detail-cards">
       <div class="detail-card"><div class="d-label">Duration</div><div class="d-val">${mins}<span class="d-unit"> min</span></div></div>
-      <div class="detail-card"><div class="d-label">Intensity</div><div class="d-val" style="font-size:15px;color:var(--text)">${ex.intensity}</div></div>
+      <div class="detail-card"><div class="d-label">Intensity</div><div class="d-val" style="font-size:14px;color:var(--text)">${ex.intensity}</div></div>
     </div>`;
-  } else {
-    html += `
-      <div class="sets-display">
-        <div class="sets-big">${ex.sets}</div>
-        <div class="sets-label">sets</div>
-        <div class="reps-row">
-          <div class="reps-val">× ${ex.reps}</div>
-          <div class="reps-unit">reps</div>
-        </div>
-      </div>`;
-    html += `<div class="detail-cards">
+  }else{
+    html+=`<div class="sets-display">
+      <div class="sets-big">${ex.sets}</div><div class="sets-label">sets</div>
+      <div class="reps-row"><div class="reps-val">× ${ex.reps}</div><div class="reps-unit">reps</div></div>
+    </div>`;
+    html+=`<div class="detail-cards">
       <div class="detail-card"><div class="d-label">Weight</div><div class="d-val">${ex.weight}</div></div>
       <div class="detail-card"><div class="d-label">Rest</div><div class="d-val">${ex.rest}<span class="d-unit">s</span></div></div>
     </div>`;
   }
-
-  html += `<div class="note-card"><div class="n-label">💡 How to do it</div><div class="n-text">${ex.note}</div></div>`;
-  document.getElementById('ex-body').innerHTML = html;
-  document.getElementById('ex-body').scrollTop = 0;
-
-  if (ex.type === 'timer') startTimer();
+  html+=`<div class="note-card"><div class="n-label">💡 How to do it</div><div class="n-text">${ex.note}</div></div>`;
+  document.getElementById('ex-body').innerHTML=html;
+  document.getElementById('ex-body').scrollTop=0;
+  if(isTimer)startTimer();
 }
 
-function startTimer() {
-  updateRing(timerRemaining, exercises[current].duration);
-  timerInterval = setInterval(() => {
+function startTimer(){
+  updateRing(timerRemaining,exercises[current].duration);
+  timerInterval=setInterval(()=>{
     timerRemaining--;
-    updateRing(timerRemaining, exercises[current].duration);
-    if (timerRemaining <= 0) {
-      clearInterval(timerInterval);
-      if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
-    }
-  }, 1000);
+    updateRing(timerRemaining,exercises[current].duration);
+    if(timerRemaining<=0){clearInterval(timerInterval);if(navigator.vibrate)navigator.vibrate([300,100,300])}
+  },1000);
 }
-
-function updateRing(remaining, total) {
-  const el = document.getElementById('timer-display');
-  const ring = document.getElementById('ring');
-  if (!el || !ring) return;
-  const mins = Math.floor(remaining / 60);
-  const secs = remaining % 60;
-  el.textContent = `${mins}:${secs.toString().padStart(2,'0')}`;
-  const offset = CIRCUMFERENCE * (1 - remaining / total);
-  ring.style.strokeDashoffset = offset;
+function updateRing(rem,total){
+  const el=document.getElementById('timer-display'),ring=document.getElementById('ring');
+  if(!el||!ring)return;
+  el.textContent=`${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}`;
+  ring.style.strokeDashoffset=CIRC*(1-rem/total);
 }
-
-function clearTimer() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+function clearTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null}}
+function nextExercise(){
+  const ex=exercises[current];
+  if(current<exercises.length-1){if(ex.type==='sets'){showRest(ex.rest||60)}else{current++;renderExercise()}}
+  else{clearTimer();showScreen('done')}
 }
-
-function nextExercise() {
-  const ex = exercises[current];
-  if (current < exercises.length - 1) {
-    if (ex.type === 'sets') { showRest(ex.rest || 60); }
-    else { current++; renderExercise(); }
-  } else { clearTimer(); showScreen('done'); }
+function prevExercise(){if(current>0){current--;renderExercise()}}
+function showRest(seconds){
+  restRemaining=seconds;
+  document.getElementById('rest-overlay').classList.add('show');
+  document.getElementById('rest-count').textContent=restRemaining;
+  restInterval=setInterval(()=>{restRemaining--;document.getElementById('rest-count').textContent=restRemaining;if(restRemaining<=0)skipRest()},1000);
 }
-
-function prevExercise() {
-  if (current > 0) { current--; renderExercise(); }
+function skipRest(){clearInterval(restInterval);document.getElementById('rest-overlay').classList.remove('show');current++;renderExercise()}
+function togglePause(){
+  const btn=document.getElementById('btn-pause');
+  if(isPaused){isPaused=false;btn.textContent='⏸ PAUSE';btn.classList.remove('paused');startTimer()}
+  else{isPaused=true;btn.textContent='▶ RESUME';btn.classList.add('paused');clearTimer()}
 }
-
-function showRest(seconds) {
-  restRemaining = seconds;
-  const overlay = document.getElementById('rest-overlay');
-  overlay.classList.add('show');
-  document.getElementById('rest-count').textContent = restRemaining;
-  restInterval = setInterval(() => {
-    restRemaining--;
-    document.getElementById('rest-count').textContent = restRemaining;
-    if (restRemaining <= 0) skipRest();
-  }, 1000);
-}
-
-function skipRest() {
-  clearInterval(restInterval);
-  document.getElementById('rest-overlay').classList.remove('show');
-  current++;
-  renderExercise();
-}
-
-function togglePause() {
-  const btn = document.getElementById('btn-pause');
-  if (isPaused) { isPaused = false; btn.textContent = '⏸ PAUSE'; btn.classList.remove('paused'); startTimer(); }
-  else { isPaused = true; btn.textContent = '▶ RESUME'; btn.classList.add('paused'); clearTimer(); }
-}
-
-function restart() { current = 0; clearTimer(); showScreen('welcome'); }
+function restart(){current=0;clearTimer();showScreen('welcome')}
 </script>
 </body>
 </html>
