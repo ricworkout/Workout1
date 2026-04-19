@@ -25,11 +25,9 @@
   html, body { height:100%; overflow:hidden; }
   body { background:var(--bg); color:var(--text); font-family:-apple-system,'SF Pro Display',sans-serif; }
 
-  /* SCREENS */
   .screen { position:fixed; inset:0; display:flex; flex-direction:column; opacity:0; pointer-events:none; transition:opacity 0.3s; }
   .screen.active { opacity:1; pointer-events:all; }
 
-  /* ── WELCOME SCREEN ── */
   #welcome {
     background: linear-gradient(160deg, #0A0A0F 0%, #1A0810 50%, #0A0A0F 100%);
     align-items:center; justify-content:center; gap:0; padding:40px 32px;
@@ -45,7 +43,6 @@
   .btn-start { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:20px; font-weight:800; letter-spacing:1px; border:none; border-radius:var(--radius); padding:22px 0; width:100%; max-width:340px; cursor:pointer; box-shadow:0 8px 32px rgba(232,41,58,0.4); transition:transform 0.15s, box-shadow 0.15s; }
   .btn-start:active { transform:scale(0.97); box-shadow:0 4px 16px rgba(232,41,58,0.3); }
 
-  /* ── EXERCISE SCREEN ── */
   #exercise { background:var(--bg); }
 
   .ex-header { padding:16px 20px 12px; display:flex; align-items:center; gap:12px; background:var(--surface); border-bottom:1px solid var(--dim); flex-shrink:0; }
@@ -58,9 +55,13 @@
   .ex-body { flex:1; overflow-y:auto; padding:20px 20px 0; -webkit-overflow-scrolling:touch; }
 
   .ex-number { font-size:12px; font-weight:700; letter-spacing:3px; color:var(--accent); text-transform:uppercase; margin-bottom:8px; }
-  .ex-name { font-size:32px; font-weight:800; line-height:1.1; margin-bottom:20px; }
+  .ex-name { font-size:32px; font-weight:800; line-height:1.1; margin-bottom:16px; }
 
-  /* TIMER RING */
+  /* GIF CARD */
+  .gif-card { background:var(--card); border:1px solid var(--dim); border-radius:14px; overflow:hidden; margin-bottom:20px; position:relative; }
+  .gif-card img { width:100%; max-height:200px; object-fit:cover; display:block; }
+  .gif-label { position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.7); color:var(--muted); font-size:10px; font-weight:700; letter-spacing:1px; padding:4px 8px; border-radius:8px; text-transform:uppercase; }
+
   .timer-wrap { display:flex; flex-direction:column; align-items:center; margin-bottom:24px; }
   .ring-container { position:relative; width:180px; height:180px; }
   .ring-container svg { transform:rotate(-90deg); }
@@ -70,7 +71,6 @@
   .ring-seconds { font-size:44px; font-weight:800; line-height:1; }
   .ring-label { font-size:11px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
 
-  /* SETS DISPLAY */
   .sets-display { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:24px; }
   .sets-big { font-size:72px; font-weight:800; line-height:1; color:var(--accent); }
   .sets-label { font-size:13px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
@@ -78,7 +78,6 @@
   .reps-val { font-size:28px; font-weight:700; }
   .reps-unit { font-size:14px; color:var(--muted); }
 
-  /* WEIGHT / DETAILS CARDS */
   .detail-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
   .detail-card { background:var(--card); border:1px solid var(--dim); border-radius:14px; padding:16px; }
   .detail-card .d-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
@@ -89,7 +88,6 @@
   .note-card .n-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
   .note-card .n-text { font-size:14px; color:var(--text); line-height:1.5; font-style:italic; }
 
-  /* REST OVERLAY */
   #rest-overlay {
     position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:100;
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
@@ -101,7 +99,6 @@
   .rest-sub { font-size:14px; color:var(--muted); }
   .btn-skip-rest { background:var(--dim); color:var(--muted); border:none; border-radius:12px; padding:14px 32px; font-size:15px; font-weight:700; cursor:pointer; margin-top:8px; }
 
-  /* DONE SCREEN */
   #done { background:linear-gradient(160deg,#0A0F0A 0%,#0A1A0F 50%,#0A0F0A 100%); align-items:center; justify-content:center; padding:40px 32px; gap:0; }
   .done-emoji { font-size:72px; margin-bottom:16px; }
   .done-title { font-size:44px; font-weight:800; text-align:center; margin-bottom:8px; }
@@ -113,7 +110,6 @@
   .done-stat .l { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
   .btn-restart { background:var(--surface); color:var(--muted); border:1px solid var(--dim); border-radius:var(--radius); padding:18px 0; width:100%; max-width:300px; font-size:16px; font-weight:700; cursor:pointer; }
 
-  /* BOTTOM CONTROLS */
   .ex-controls { padding:16px 20px 32px; flex-shrink:0; display:flex; flex-direction:column; gap:10px; }
   .btn-next { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:19px; font-weight:800; border:none; border-radius:var(--radius); padding:20px; cursor:pointer; transition:transform 0.15s; box-shadow:0 6px 24px rgba(232,41,58,0.35); }
   .btn-next:active { transform:scale(0.97); }
@@ -124,7 +120,6 @@
 </head>
 <body>
 
-<!-- WELCOME -->
 <div class="screen active" id="welcome">
   <div class="welcome-day">Monday</div>
   <div class="welcome-title">CARDIO +<br><span>UPPER</span><br>BODY</div>
@@ -137,7 +132,6 @@
   <button class="btn-start" onclick="startWorkout()">START WORKOUT</button>
 </div>
 
-<!-- EXERCISE -->
 <div class="screen" id="exercise">
   <div class="ex-header">
     <div class="ex-day-badge">Monday</div>
@@ -146,9 +140,7 @@
   <div class="progress-bar-wrap">
     <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
   </div>
-  <div class="ex-body" id="ex-body">
-    <!-- filled by JS -->
-  </div>
+  <div class="ex-body" id="ex-body"></div>
   <div class="ex-controls">
     <button class="btn-next" id="btn-next" onclick="nextExercise()">NEXT EXERCISE →</button>
     <button class="btn-pause" id="btn-pause" onclick="togglePause()">⏸ PAUSE</button>
@@ -156,7 +148,6 @@
   </div>
 </div>
 
-<!-- REST OVERLAY -->
 <div id="rest-overlay">
   <div class="rest-title">Rest</div>
   <div class="rest-count" id="rest-count">90</div>
@@ -164,7 +155,6 @@
   <button class="btn-skip-rest" onclick="skipRest()">Skip Rest →</button>
 </div>
 
-<!-- DONE -->
 <div class="screen" id="done">
   <div class="done-emoji">🏆</div>
   <div class="done-title">MONDAY<br><span>DONE!</span></div>
@@ -182,64 +172,61 @@ const exercises = [
     name: "Spinning Warmup",
     type: "timer",
     duration: 600,
-    weight: null,
-    sets: null,
-    reps: null,
+    weight: null, sets: null, reps: null,
     intensity: "Light resistance",
-    note: "Pedal easy. Get your heart rate up to around 110 bpm. Just wake the body up — no effort yet."
+    note: "Pedal easy. Get your heart rate up to around 110 bpm. Just wake the body up — no effort yet.",
+    gif: "https://media.giphy.com/media/3o7TKwxYkeW0ZvTqsU/giphy.gif",
+    gifAlt: "Spinning bike warmup"
   },
   {
     name: "Spinning HIIT",
     type: "timer",
     duration: 900,
-    weight: null,
-    sets: null,
-    reps: null,
+    weight: null, sets: null, reps: null,
     intensity: "1 min hard / 1 min easy × 7",
-    note: "Go hard (130–154 bpm) for 1 minute, then easy for 1 minute. Repeat 7 times. Push on the hard intervals!"
+    note: "Go hard (130–154 bpm) for 1 minute, then easy for 1 minute. Repeat 7 times. Push on the hard intervals!",
+    gif: "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+    gifAlt: "Cycling HIIT intervals"
   },
   {
     name: "Bench Press",
     type: "sets",
     duration: null,
-    weight: "30 kg",
-    sets: 3,
-    reps: 10,
-    rest: 90,
+    weight: "30 kg", sets: 3, reps: 10, rest: 90,
     intensity: "→ 32 kg at Week 4",
-    note: "Keep elbows at 45°. Lower controlled, press strong. Full stop at top. 90 seconds rest between sets."
+    note: "Keep elbows at 45°. Lower controlled, press strong. Full stop at top. 90 seconds rest between sets.",
+    gif: "https://media.giphy.com/media/3oFzmkkwfOGMRSm9he/giphy.gif",
+    gifAlt: "Bench press technique"
   },
   {
     name: "Dumbbell Rows",
     type: "sets",
     duration: null,
-    weight: "Moderate",
-    sets: 3,
-    reps: 12,
-    rest: 60,
+    weight: "Moderate", sets: 3, reps: 12, rest: 60,
     intensity: "Each arm",
-    note: "One knee on bench, back flat and parallel to floor. Pull elbow straight back. Squeeze at the top."
+    note: "One knee on bench, back flat and parallel to floor. Pull elbow straight back. Squeeze at the top.",
+    gif: "https://media.giphy.com/media/RH1IFq2GT0Ooo8iIpx/giphy.gif",
+    gifAlt: "Single arm dumbbell row"
   },
   {
     name: "Shoulder Press",
     type: "sets",
     duration: null,
-    weight: "Light-medium DB",
-    sets: 3,
-    reps: 10,
-    rest: 60,
+    weight: "Light-medium DB", sets: 3, reps: 10, rest: 60,
     intensity: "Seated on bench",
-    note: "Sit upright on bench. Press dumbbells from shoulder height straight up. Lower slowly. Don't arch your back."
+    note: "Sit upright on bench. Press dumbbells from shoulder height straight up. Lower slowly. Don't arch your back.",
+    gif: "https://media.giphy.com/media/9M3aPCDRSH5KkFmxiA/giphy.gif",
+    gifAlt: "Seated dumbbell shoulder press"
   },
   {
     name: "Cool Down Stretch",
     type: "timer",
     duration: 300,
-    weight: null,
-    sets: null,
-    reps: null,
+    weight: null, sets: null, reps: null,
     intensity: "Chest, shoulders, back",
-    note: "Doorway chest stretch → shoulder cross-body → cat-cow × 5. Hold each 30 seconds. Breathe deeply."
+    note: "Doorway chest stretch → shoulder cross-body → cat-cow × 5. Hold each 30 seconds. Breathe deeply.",
+    gif: "https://media.giphy.com/media/l4FGnAfL5LJDCIVAA/giphy.gif",
+    gifAlt: "Cool down stretching"
   }
 ];
 
@@ -251,10 +238,7 @@ let restRemaining = 0;
 let isPaused = false;
 const CIRCUMFERENCE = 2 * Math.PI * 80;
 
-function startWorkout() {
-  showScreen('exercise');
-  renderExercise();
-}
+function startWorkout() { showScreen('exercise'); renderExercise(); }
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -277,6 +261,14 @@ function renderExercise() {
 
   let html = `<div class="ex-number">Exercise ${current + 1} of ${total}</div>`;
   html += `<div class="ex-name">${ex.name}</div>`;
+
+  // GIF
+  if (ex.gif) {
+    html += `<div class="gif-card">
+      <img src="${ex.gif}" alt="${ex.gifAlt}" loading="lazy">
+      <div class="gif-label">▶ Demo</div>
+    </div>`;
+  }
 
   if (ex.type === 'timer') {
     timerRemaining = ex.duration;
@@ -353,16 +345,9 @@ function clearTimer() {
 function nextExercise() {
   const ex = exercises[current];
   if (current < exercises.length - 1) {
-    if (ex.type === 'sets') {
-      showRest(ex.rest || 60);
-    } else {
-      current++;
-      renderExercise();
-    }
-  } else {
-    clearTimer();
-    showScreen('done');
-  }
+    if (ex.type === 'sets') { showRest(ex.rest || 60); }
+    else { current++; renderExercise(); }
+  } else { clearTimer(); showScreen('done'); }
 }
 
 function prevExercise() {
@@ -390,24 +375,11 @@ function skipRest() {
 
 function togglePause() {
   const btn = document.getElementById('btn-pause');
-  if (isPaused) {
-    isPaused = false;
-    btn.textContent = '⏸ PAUSE';
-    btn.classList.remove('paused');
-    startTimer();
-  } else {
-    isPaused = true;
-    btn.textContent = '▶ RESUME';
-    btn.classList.add('paused');
-    clearTimer();
-  }
+  if (isPaused) { isPaused = false; btn.textContent = '⏸ PAUSE'; btn.classList.remove('paused'); startTimer(); }
+  else { isPaused = true; btn.textContent = '▶ RESUME'; btn.classList.add('paused'); clearTimer(); }
 }
 
-function restart() {
-  current = 0;
-  clearTimer();
-  showScreen('welcome');
-}
+function restart() { current = 0; clearTimer(); showScreen('welcome'); }
 </script>
 </body>
 </html>
